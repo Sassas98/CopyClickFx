@@ -75,10 +75,7 @@ public class App extends Application {
         if(args.length>0){
             Path path = Paths.get(args[0]);
             List<String> lines = Files.readAllLines(path);
-            App.args = new String[lines.size()];
-            for (int i = 0; i < args.length; i++) {
-                App.args[i] = lines.get(i);
-            }
+            App.args = lines.get(0).split(" ");
         }else{
             App.args = args;
         }
