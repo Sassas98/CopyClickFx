@@ -32,6 +32,7 @@ public class App extends Application {
 
         VBox vbox = new VBox(0, copyButton);
         Scene scene = new Scene(vbox, 200, 200);
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
