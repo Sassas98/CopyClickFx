@@ -11,21 +11,23 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
-
-        Button copyButton = new Button(getLabel());
-        copyButton.setPrefSize(200, 200);
+        String label = getLabel();
+        double w = 100 + (label.length() * 10);
+        Button copyButton = new Button(label);
+        copyButton.setPrefSize(w, 100);
         copyButton.setStyle(
-            "-fx-font-size: 25px;" +
+            "-fx-font-size: 20px;" +
             "-fx-text-fill: white;" +
             "-fx-background-color: black;"
         );
         
-        copyButton.setOnMousePressed(e -> copyButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-size: 25px;"));
-        copyButton.setOnMouseReleased(e -> copyButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 25px;"));
+        copyButton.setOnMousePressed(e -> copyButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-size: 20px;"));
+        copyButton.setOnMouseReleased(e -> copyButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 20px;"));
         copyButton.setOnAction(event -> {
             if (args.length > 0) {
                 Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -36,7 +38,9 @@ public class App extends Application {
         });
 
         VBox vbox = new VBox(0, copyButton);
-        Scene scene = new Scene(vbox, 200, 200);
+        Scene scene = new Scene(vbox, w, 100);
+        primaryStage.initStyle(StageStyle.UTILITY);
+        primaryStage.setOpacity(0.95); 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
