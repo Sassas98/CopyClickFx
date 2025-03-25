@@ -1,4 +1,9 @@
 package fx;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,8 +71,17 @@ public class App extends Application {
 
     public static String[] args;
 
-    public static void run(String[] args) {
-        App.args = args;
+    public static void run(String[] args) throws Exception {
+        if(args.length>0){
+            Path path = Paths.get(args[0]);
+            List<String> lines = Files.readAllLines(path);
+            App.args = new String[lines.size()];
+            for (int i = 0; i < args.length; i++) {
+                App.args[i] = lines.get(i);
+            }
+        }else{
+            App.args = args;
+        }
         launch();
     }
 }
