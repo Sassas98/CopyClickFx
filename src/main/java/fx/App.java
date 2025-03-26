@@ -16,72 +16,59 @@ import javafx.stage.StageStyle;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
-        String label = getLabel();
-        double w = 100 + (label.length() * 10);
+        double w = 80 + (label.length() * 10);
         Button copyButton = new Button(label);
         copyButton.setPrefSize(w, 100);
         copyButton.setStyle(
-            "-fx-font-size: 20px;" +
+            "-fx-font-size: 22px;" +
             "-fx-text-fill: white;" +
             "-fx-background-color: black;"
         );
         
-        copyButton.setOnMousePressed(e -> copyButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-size: 20px;"));
-        copyButton.setOnMouseReleased(e -> copyButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 20px;"));
+        copyButton.setOnMousePressed(e -> copyButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-size: 22px;"));
+        copyButton.setOnMouseReleased(e -> copyButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 22px;"));
         copyButton.setOnAction(event -> {
-            if (args.length > 0) {
-                Clipboard clipboard = Clipboard.getSystemClipboard();
-                ClipboardContent content = new ClipboardContent();
-                content.putString(getValue());
-                clipboard.setContent(content);
-            }
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(value);
+            clipboard.setContent(content);
         });
 
         VBox vbox = new VBox(0, copyButton);
         Scene scene = new Scene(vbox, w, 100);
         primaryStage.initStyle(StageStyle.UTILITY);
-        primaryStage.setOpacity(0.95); 
+        double x = getXY(0);
+        double y = getXY(1);
+        if(xy_valid){
+            primaryStage.setX(x);
+            primaryStage.setX(y);
+        }
+        primaryStage.setOpacity(0.9); 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private String getLabel(){
-        String s = "";
-        boolean get = false;
-        boolean first = false;
-        for(int i = 0; i < args.length; i++){
-            if(args[i].equals("--label") || args[i].equals("-l")){
-                get = true;
-                first = true;
-                continue;
-            }
-            if(!get) continue;
-            s += (first ? "" : " ") + args[i];
-            first = false;
+    private double getXY(int i){
+        try {
+            String[] split = xy.split("_");
+            return Double.parseDouble(split[i]);
+        } catch (Exception e) {
+            xy_valid = false;
+            return 0;
         }
-        return s.equals("") ? "Copy" : s;
     }
 
-    private String getValue(){
-        String s = "";
-        for(int i = 0; i < args.length; i++){
-            if(args[i].equals("--label") || args[i].equals("-l"))
-                break;
-            s += (i == 0 ? "" : " ") + args[i];
-        }
-        return s;
-    }
-
-    public static String[] args;
+    public static String value = "", label = "Copy", xy = "0_0";
+    private boolean xy_valid = true;
 
     public static void run(String[] args) throws Exception {
-        if(args.length>0){
+        if(args.length > 0){
             Path path = Paths.get(args[0]);
             List<String> lines = Files.readAllLines(path);
-            App.args = lines.get(0).split(" ");
-        }else{
-            App.args = args;
+            App.value = lines.get(0);
+            App.label = lines.get(1);
+            App.xy = lines.get(2);
         }
         launch();
     }
