@@ -15,9 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         FlowPane flow = new FlowPane();
-        flow.setStyle(
-            "-fx-background-color: gray;"
-        );
+        flow.setStyle("-fx-background-color: black;");
         List<CopyButton> buttons = infos.stream()
             .map(pair -> new CopyButton(pair.label, pair.value)).toList();
         buttons.forEach(button -> flow.getChildren().add(button));
